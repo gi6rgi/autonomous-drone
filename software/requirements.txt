@@ -1,0 +1,6 @@
+# Ставится на Raspberry Pi 5 (и на ПК для SITL-отладки)
+# picamera2 НЕ отсюда — на Pi ставится через apt: sudo apt install python3-picamera2
+pymavlink>=2.4.40
+opencv-contrib-python>=4.9     # contrib нужен для CSRT-трекера
+numpy
+pyyaml

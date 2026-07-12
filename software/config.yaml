@@ -1,0 +1,37 @@
+mavlink:
+  # На Pi 5 (UART GPIO14/15): /dev/ttyAMA0
+  # Для отладки с SITL:       udp:127.0.0.1:14550
+  connection: /dev/ttyAMA0
+  baud: 921600
+
+camera:
+  backend: picamera2      # picamera2 | opencv (веб-камера для отладки на ПК)
+  device: 0               # индекс камеры для opencv-бэкенда
+  width: 1280
+  height: 720
+  fps: 30
+  hflip: false
+  vflip: false
+  # Фокусное в пикселях по горизонтали. Для 175° линзы это ГРУБАЯ оценка —
+  # для точной дистанции откалибруйте камеру (fisheye-модель OpenCV).
+  fx_px: 550
+
+tracker:
+  mode: aruco             # aruco (рекомендуется для старта) | csrt
+  aruco_dict: DICT_5X5_50
+  aruco_id: 7
+  marker_size_m: 0.30     # сторона напечатанного маркера, метры
+
+follow:
+  target_distance_m: 4.0  # держать такую дистанцию до цели
+  max_forward_ms: 1.5     # ограничение скорости вперёд/назад, м/с
+  max_yaw_rate_dps: 45    # ограничение скорости рыскания, град/с
+  kp_yaw: 60.0            # град/с на единицу нормированной ошибки по X (-1..1)
+  kp_dist: 0.6            # м/с на метр ошибки дистанции
+  deadband_px: 30         # мёртвая зона по центру кадра
+
+safety:
+  target_lost_hover_s: 0.5   # цель потеряна дольше -> зависнуть (нулевые скорости)
+  target_lost_loiter_s: 5.0  # цель потеряна дольше -> переключить FC в LOITER
+  min_battery_v: 21.0        # 6S: 3.5 В/банка. Ниже -> LOITER и предупреждение
+  max_speed_ms: 2.0          # абсолютный потолок любой команды скорости
